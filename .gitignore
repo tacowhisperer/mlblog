@@ -1,0 +1,4 @@
+# Ignore credentials information.
+google_auth
+credentials.json
+token.json

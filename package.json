@@ -1,0 +1,23 @@
+{
+  "name": "mlblog",
+  "version": "1.0.0",
+  "description": "Blog helper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tacowhisperer/mlblog.git"
+  },
+  "author": "tacowhisperer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tacowhisperer/mlblog/issues"
+  },
+  "homepage": "https://github.com/tacowhisperer/mlblog#readme",
+  "dependencies": {
+    "googleapis": "^39.2.0",
+    "readline-sync": "^1.4.10"
+  }
+}
