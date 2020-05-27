@@ -1,6 +1,6 @@
 const gaf = require('./src/google/auth/googleauth').googleAuthFactory;
 const gsf = require('./src/google/sheets/googlesheets').googleSheetsFactory;
-const wf = require('./src/git/watch').watchFactory;
+const wf = require('./src/dir/watch').watchFactory;
 
 /**
  * Main controller of the Blog application. It combines the Google Sheets API with the Git directory repository
