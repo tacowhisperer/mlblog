@@ -18,6 +18,7 @@
   "homepage": "https://github.com/tacowhisperer/mlblog#readme",
   "dependencies": {
     "googleapis": "^39.2.0",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "simple-git": "^2.5.0"
   }
 }
