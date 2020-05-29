@@ -1,4 +1,4 @@
-const sheets = require('googleapis').sheets;
+const sheets = require('googleapis').google.sheets;
 
 /**
  * Creates a new googleSheetsObject that handles spreadsheet data reading.
