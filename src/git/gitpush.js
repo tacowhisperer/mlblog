@@ -70,9 +70,10 @@ function gitPushObject(filePath) {
 			// The file we are watching is modified, so push the changes to the master repository.
 			if (modded) {
 				await git.add('.' + path.sep + PATH);
-				const status = await git.commit(commAdapter.getCommitMessage());
+				await git.commit(commAdapter.getCommitMessage());
 
-				console.log('Status:', status);
+				const status = await git.push('origin', 'master');
+				console.log(status);
 			}
 		} catch (err) {
 			console.log('Error in simple-git:', err);
