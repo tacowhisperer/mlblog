@@ -71,9 +71,9 @@ function gitPushObject(filePath) {
 			if (modded) {
 				await git.add('.' + path.sep + PATH);
 				await git.commit(commAdapter.getCommitMessage());
+				await git.push('origin', 'master');
 
-				const status = await git.push('origin', 'master');
-				console.log(status);
+				callback();
 			}
 		} catch (err) {
 			console.log('Error in simple-git:', err);
@@ -81,7 +81,7 @@ function gitPushObject(filePath) {
 	};
 }
 
-gitPushFactory('./src/git/gitpush.js').push();
+gitPushFactory('./src/git/gitpush.js').push(() => console.log('Successfully pushed to origin master.'));
 
 // git.status((err, status) => {
 // 	if (err) console.log('Error in simple-git:', err);
