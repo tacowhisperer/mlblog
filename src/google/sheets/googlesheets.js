@@ -1,4 +1,4 @@
-const {google} = require('googleapis');
+const sheets = require('googleapis').sheets;
 
 /**
  * Creates a new googleSheetsObject that handles spreadsheet data reading.
@@ -49,7 +49,7 @@ function googleSheetsObject(sheetId) {
 	 * @param {function} callback Two argument function (err, res) that gets called once the call is finished.
 	 */
 	this.read = function(dataRange, callback) {
-		google.sheets(commAdapter.getAuth()).spreadsheets.values.get({
+		sheets(commAdapter.getAuth()).spreadsheets.values.get({
 			spreadsheetId: SHEET_ID,
 			range: dataRange
 		}, callback);

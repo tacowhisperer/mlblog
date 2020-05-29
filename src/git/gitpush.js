@@ -47,7 +47,7 @@ function gitPushObject(filePath) {
 
 	/**
 	 * Pushes the watched file to the git master repository if changes are detected.
-	 * @param {function} callback Function called once the push to the git master repository is successful.
+	 * @param {function} callback Function called once git binaries have executed. On error, 1st argument is non-null.
 	 */
 	this.push = async function(callback) {
 		const git = require('simple-git/promise')(commAdapter.getGitHomePath());
@@ -67,24 +67,20 @@ function gitPushObject(filePath) {
 				}
 			}
 
-			// The file we are watching is modified, so push the changes to the master repository.
-			if (modded) {
-				await git.add('.' + path.sep + PATH);
-				await git.commit(commAdapter.getCommitMessage());
-				await git.push('origin', 'master');
+			if (!modded)
+				throw `Error: Watched file "${PATH}" is up to date.`;
 
-				callback();
-			}
+			// The file we are watching is modified, so push the changes to the master repository.
+			await git.add('.' + path.sep + PATH);
+			await git.commit(commAdapter.getCommitMessage());
+			await git.push('origin', 'master');
+
+			callback(null);
 		} catch (err) {
-			console.log('Error in simple-git:', err);
+			callback(err);
 		}
 	};
 }
 
-gitPushFactory('./src/git/gitpush.js').push(() => console.log('Successfully pushed to origin master.'));
-
-// git.status((err, status) => {
-// 	if (err) console.log('Error in simple-git:', err);
-
-// 	else console.log(status);
-// });
+// Export the factory for access in other modules.
+exports.gitPushFactory = gitPushFactory;
