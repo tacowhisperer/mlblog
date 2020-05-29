@@ -1,17 +1,18 @@
 /**
- * Creates a new jmapObject that handles conversion of arrays into JSON objects that can be exported.
+ * Creates a new jmapObject that handles conversion of 1D delimited arrays into a 1D array of JSON object maps.
  */
 function jmapFactory() {
 	return new jmapObject();
 }
 
 /**
- * JSON Mapping Object. It maps an input array of elements into a JSON object that can be exported.
+ * JSON Mapping Object. It maps an input 1D array of delimited elements into a 1D array of JSON object maps.
  */
 function jmapObject() {
 	// Communication adapter for receiving data from other modules.
 	var commAdapter = {
-		getFormat: () => Object.create({delim: null, order: [], enum: {}})
+		getFormat: () => Object.create({delim: null, order: []}),
+		getExtraKey: () => 'JMAPEXTRA'
 	};
 
 	/**
@@ -38,17 +39,46 @@ function jmapObject() {
 	};
 
 	/**
-	 * Formats the input array into a JSON object that is returned.
-	 * @param {array} arr The input array of data that is formatted using the available format object from commAdapter.
+	 * Formats the input array into a 1D array of JSON objects.
+	 * @param {Array} arr The input array of data that is formatted using the available format object from commAdapter.
+	 * @return {Array} An array of JSON objects corresponding to the grouped elements of the input array.
 	 */
 	this.format = function(arr) {
 		const FMT = commAdapter.getFormat();
 		
 		const DELIM = FMT.delim;
 		const ORDER = FMT.order;
-		const ENUM = FMT.enum;
 
-		// TODO: Finish this function.
+		// Group array elements into their delimiter-separated values
+		const groups = [];
+		groups.push(arr.reduce((group, val) => {
+			if (val === DELIM) {
+				groups.push(group);
+				return [];
+			}
+
+			return group.concat([val]);
+		}, []));
+
+		// Convert the grouped arrays into their respective mapped objects
+		return groups.map(group => {
+			const map = {};
+
+			let i = 0;
+			for (; i < ORDER.length; i++)
+				map[ORDER[i]] = group[i];
+
+			// Push any remaining elements into the EXTRA_KEY array in the output map.
+			if (i < group.length) {
+				const EXTRA_KEY = commAdapter.getExtraKey();
+
+				map[EXTRA_KEY] = [];
+				for (; i < group.length; i++)
+					map[EXTRA_KEY].push(group[i]);
+			}
+
+			return map;
+		});
 	};
 }
 
