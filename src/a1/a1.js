@@ -33,7 +33,6 @@ function toA1(colIdx, rowIdx, page = null, mode = MODE.RELATIVE) {
 		default:
 			return `${PAGE}${toA1Column(colIdx)}${rowIdx + 1}`;
 	}
-	
 }
 
 /**
