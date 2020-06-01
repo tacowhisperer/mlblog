@@ -17,21 +17,22 @@ const MODE = {
 /**
  * Converts the incoming column and row index values (0-based) into the equivalent values in A1 notation.
  * @param {number} colIdx The column index
- * @param {number} rowIdx The row index
+ * @param {number} rowIdx The row index. If Infinity is given, then the entire column range is assumed.
  * @param {string} page Optional. The page name to prepend to the output A1 notation.
  * @param {number} mode Optional. The mode in which the A1 columns/rows should be calculated (relative or absolute).
  */
 function toA1(colIdx, rowIdx, page = null, mode = MODE.RELATIVE) {
 	const PAGE = page == null ? '' : `${page}!`;
+	const ROW = rowIdx === Number.POSITIVE_INFINITY ? '' : rowIdx + 1;
 	switch (mode) {
 		case MODE.ABSOLUTE_COL:
-			return `${PAGE}$${toA1Column(colIdx)}${rowIdx + 1}`;
+			return `${PAGE}$${toA1Column(colIdx)}${ROW}`;
 		case MODE.ABSOLUTE_ROW:
-			return `${PAGE}${toA1Column(colIdx)}$${rowIdx + 1}`;
+			return `${PAGE}${toA1Column(colIdx)}$${ROW}`;
 		case MODE.ABSOLUTE:
-			return `${PAGE}$${toA1Column(colIdx)}$${rowIdx + 1}`;
+			return `${PAGE}$${toA1Column(colIdx)}$${ROW}`;
 		default:
-			return `${PAGE}${toA1Column(colIdx)}${rowIdx + 1}`;
+			return `${PAGE}${toA1Column(colIdx)}${ROW}`;
 	}
 }
 
