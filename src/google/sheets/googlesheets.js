@@ -1,4 +1,12 @@
+/**
+ * @author tacowhisperer
+ */
+
 const sheets = require('googleapis').google.sheets;
+
+/**
+ * @author tacowhisperer
+ */
 
 /**
  * Creates a new googleSheetsObject that handles spreadsheet data reading.
@@ -46,15 +54,13 @@ function googleSheetsObject(sheetId) {
 	/**
 	 * Reads the data at the specified data range.
 	 * @param {string} dataRange The range (A1 notation) of data to be read from the specified sheet.
-	 * @param {function} callback Two argument function (err, res) that gets called once the call is finished.
+	 * @returns {Promise} The Promise of the data read from the specified range.
 	 */
-	this.read = function(dataRange, callback) {
-		sheets(commAdapter.getAuth()).spreadsheets.values.get({
+	this.read = async function(dataRange) {
+		return await sheets(commAdapter.getAuth()).spreadsheets.values.get({
 			spreadsheetId: SHEET_ID,
 			range: dataRange
-		}, callback);
-
-		return this;
+		});
 	};
 }
 

@@ -1,3 +1,7 @@
+/**
+ * @author tacowhisperer
+ */
+
 const gaf = require('./src/google/auth/googleauth').googleAuthFactory;
 const gsf = require('./src/google/sheets/googlesheets').googleSheetsFactory;
 const wf = require('./src/dir/watch').watchFactory;
@@ -65,20 +69,18 @@ gao.authenticate();
 
 const gso = gsf('1PvfOnhC4a0W5Vsop7hk3DFaq_hO9ZOp1bGbMc9cgkco');
 
-gao.authorize(creds => gso.setCommAdapter({getAuth: () => creds}).read('src!A:A', (err, res) => {
-	if (err)
-		return console.log('The API returned an error: ' + err);
+gao.authorize(creds => gso.setCommAdapter({getAuth: () => creds}).read('src!A:A').then(
+	res => {
+		const rows = res.data.values;
+		if (rows.length) {
+			console.log('Blog Data:');
 
-	const rows = res.data.values;
-	if (rows.length) {
-		console.log('Blog Data:');
-
-		// Print columns A and E, which correspond to indices 0 and 4.
-		rows.map((row) => {
-			console.log(`${row[0]}`);
-		});
-	} else {
-		console.log('No data found.');
-	}
-
-}));
+			// Print columns A and E, which correspond to indices 0 and 4.
+			rows.map((row) => {
+				console.log(`${row[0]}`);
+			});
+		} else {
+			console.log('No data found.');
+		}
+	}, err => console.log('The API returned an error: ' + err)
+));

@@ -1,61 +1,56 @@
 /**
- * Mexico Lindo Blog main controller.
- * 
  * @author tacowhisperer
  */
+
 const jmapFactory = require('../json/jmap').jmapFactory;
-const googleAuthFactory = require('../google/auth/googleauth').googleAuthFactory;
-const googleSheetsFactory = require('../google/sheets/googlesheets').googleSheetsFactory;
 
 /**
- * Creates an mlblog object that 
+ * Creates an mlblog object that reads data on the mlblog database.
+ * @param {sheetdbObject} sheetDb A sheet database object that is connected to the ml blog for reading its data.
+ * @param {Array} blogContentOrder Array specifying the format of the blog content in the database.
+ * @param {Array} userContentOrder Array specifying the format of the user content in the database.
  */
-function mlblogFactory() {
-	return new mlblogObject();
+function mlblogFactory(sheetDb, blogContentOrder, userContentOrder) {
+	return new mlblogObject(sheetDb, blogContentOrder, userContentOrder);
 }
 
-function mlblogObject() {
-	// Communication adapter for receiving data from other modules.
-	var commAdapter = {
-		getSheetId: () => '',
-		getCredentialsPath: () => '',
-		getTokenPath: () => ''
-	};
+/**
+ * The Mexico Lindo Blog Object. It connects to a blog database shaped like a spreadsheet, and returns the formatted
+ * content in a JSON object for further processing.
+ * @param {sheetdbObject} sheetDb A sheet database object that is connected to the ml blog for reading its data.
+ * @param {Array} blogContentOrder Array specifying the format of the blog content in the database.
+ * @param {Array} userContentOrder Array specifying the format of the user content in the database.
+ */
+function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
+	const DB = sheetDb;
+	
+	// Used for mapping blog content to their respective JSON objects for further processing.
+	const jmapBlog = jmapFactory().setCommAdapter({
+		getFormat: () => Object.create({delim: '---', order: blogContentOrder}),
+		getExtraKey: () => 'IMAGES'
+	});
 
-	/**
-	 * Sets the internal communication adapter to the one provided. If the required properties are not
-	 * found in the new adapter, the adapter is rejected and an error message is printed. The old adapter
-	 * is not removed.
-	 * @param {Object} newCommAdapter The new communication adapter to replace the old one with.
-	 */
-	this.setCommAdapter = function(newCommAdapter) {
-		let ok = true;
-		for (let comm in commAdapter) {
-			if (!newCommAdapter.hasOwnProperty(comm) || (typeof newCommAdapter[comm]) !== (typeof commAdapter[comm])) {
-				ok = comm;
-				break;
-			}
-		}
+	// Used for mapping user content to their respective JSON objects for further processing.
+	const jmapUser = jmapFactory().setCommAdapter({
+		getFormat: () => Object.create({delim: null, order: userContentOrder}),
+		getExtraKey: () => 'EXTRA'
+	});
 
-		if (ok === true)
-			commAdapter = newCommAdapter;
-		else
-			console.error(`New communication adapter has invalid property "${ok}"`);
-		
-		return this;
-	};
 
 	/**
 	 * Reads and parses the main blog content found in the blog at the Google Sheets database.
 	 */
-	this.blogContent = function(handler) {
-		
+	this.blogContent = async function() {
+		const rawBlogContent = await DB.readSheetColumns('src', 0, 1);
+		const transBlogContent = DB.transposeArray(rawBlogContent);
+
+		return jmapBlog.format(transBlogContent);
 	};
 
 	/**
 	 * Reads and parses the username content found in the blog at the Google Sheets database.
 	 */
-	this.usernameContent = function(handler) {
-
+	this.usernameContent = async function() {
+		return jmapUser.format(await DB.readSheetRows(0, Infinity));
 	};
 }

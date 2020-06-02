@@ -1,4 +1,8 @@
 /**
+ * @author tacowhisperer
+ */
+ 
+/**
  * Converts the input integer into the string represented by the symbology provided.
  * @param {number} num The number to be converted.
  * @param {Array} base Array from least to most significant symbol for the number whose base should be changed.

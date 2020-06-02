@@ -1,3 +1,7 @@
+/**
+ * @author tacowhisperer
+ */
+
 const baseN = require('./../baseN/baseN').baseN;
 
 // ['A', 'B', 'C', ..., 'Z']

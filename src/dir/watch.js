@@ -1,3 +1,7 @@
+/**
+ * @author tacowhisperer
+ */
+
 const fs = require('fs');
 
 /**
