@@ -1,4 +1,8 @@
 /**
+ * @author tacowhisperer
+ */
+
+/**
  * Creates a new Sheet DB Object used to navigate a database shaped like a spreadsheet.
  */
 function sheetdbFactory() {
