@@ -53,7 +53,7 @@ function engineObject(interval, reps = Infinity) {
 	 * Start engine execution.
 	 */
 	this.start = function() {
-		if (eventLoop !== 0)
+		if (eventLoop === 0)
 			eventLoop = EVENT_LOOP();
 
 		return this;
@@ -63,7 +63,7 @@ function engineObject(interval, reps = Infinity) {
 	 * Terminate engine execution.
 	 */
 	this.stop = function() {
-		if (eventLoop === 0)
+		if (eventLoop !== 0)
 			eventLoop = clearInterval(eventLoop) || 0;
 
 		return this;
