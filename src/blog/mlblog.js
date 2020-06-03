@@ -51,6 +51,6 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	 * Reads and parses the username content found in the blog at the Google Sheets database.
 	 */
 	this.usernameContent = async function() {
-		return jmapUser.format(await DB.readSheetRows(0, Infinity));
+		return jmapUser.format(await DB.readSheetRows('usrs', 0, Infinity));
 	};
 }

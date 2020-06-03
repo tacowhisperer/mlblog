@@ -1,13 +1,13 @@
 /**
  * @author tacowhisperer
  */
- 
+
 /**
  * Converts the input integer into the string represented by the symbology provided.
  * @param {number} num The number to be converted.
  * @param {Array} base Array from least to most significant symbol for the number whose base should be changed.
  * @param {number} digits The number of digits to display as the output. Default 0 means as few as necessary.
- * @return {string} The input number represented with the provided symbology.
+ * @returns {string} The input number represented with the provided symbology.
  */
 function baseN(num, base, digits = 0) {
 	const N = base.length;

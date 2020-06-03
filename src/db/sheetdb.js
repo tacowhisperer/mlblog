@@ -81,7 +81,7 @@ function sheetdbObject() {
 	/**
 	 * Transposes the input array.
 	 * @param {Array} arr The array to transpose.
-	 * @return {Array} The input array, but transposed.
+	 * @returns {Array} The input array, but transposed.
 	 */
 	this.transposeArray = function(arr) {
 		if (arr.length == 0)

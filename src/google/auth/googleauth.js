@@ -39,7 +39,7 @@ function googleAuthObject(credentialsPath, tokenPath) {
 	/**
 	 * Obtains an old authorization token if it exists, or generates a new one if unavailable.
 	 * @param {Object} auth2Client oAuth2Client object created by the google.auth.OAuth2 API.
-	 * @return {Object} token The authorization token object to be set to the active oAuth2Client object.
+	 * @returns {Promise} The Promise of an authorization token object to be set to the active oAuth2Client object.
 	 */
 	async function getNewToken(auth2Client) {
 		const authUrl = auth2Client.generateAuthUrl({
