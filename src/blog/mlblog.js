@@ -41,7 +41,7 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	 * Reads and parses the main blog content found in the blog at the Google Sheets database.
 	 */
 	this.blogContent = async function() {
-		const rawBlogContent = await DB.readSheetColumns('src', 0, 1);
+		const rawBlogContent = await DB.readSheetColumns('src', 0, 0);
 		const transBlogContent = DB.transposeArray(rawBlogContent);
 
 		return jmapBlog.format(transBlogContent);
