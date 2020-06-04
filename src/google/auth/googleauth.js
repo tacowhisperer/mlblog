@@ -104,12 +104,17 @@ function googleAuthObject(credentialsPath, tokenPath) {
 	};
 
 	/**
-	 * Gives the provided function access to the Promise oAuth2Client object.
-	 * @param {function} accessor Single argument function that uses the resolved Google Sheets v4 API auth object.
+	 * Gives the provided function access to the Promise oAuth2Client object as a Promise.
 	 */
-	this.authorize = function(accessor) {
-		resolvingToken.then(x => accessor({version: 'v4', auth: oAuth2Client}));
-		return this;
+	this.authorize = async function() {
+		try {
+			await resolvingToken;
+		} catch (err) {
+			console.error(`Error in token resolution:`, err);
+			return Object.create({});
+		}
+
+		return {version: 'v4', auth: oAuth2Client};
 	};
 }
 

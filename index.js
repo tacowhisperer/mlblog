@@ -2,9 +2,8 @@
  * @author tacowhisperer
  */
 
-const gaf = require('./src/google/auth/googleauth').googleAuthFactory;
-const gsf = require('./src/google/sheets/googlesheets').googleSheetsFactory;
 const wf = require('./src/dir/watch').watchFactory;
+const googledb = require('./src/google/db/googledb').googledbFactory;
 
 /**
  * Main controller of the Blog application. It combines the Google Sheets API with the Git directory repository
@@ -57,6 +56,7 @@ controller(
 		};
 	}).start();
 
+
 // The file token.json stores the user's access and refresh tokens, and is created automatically when the authorization
 // flow completes for the first time.
 const TOKEN_PATH = './token.json';
@@ -64,14 +64,12 @@ const TOKEN_PATH = './token.json';
 // The directory that holds the credentials to use for the app
 const CREDENTIALS_PATH = './google_auth/credentials.json';
 
-const gao = gaf(CREDENTIALS_PATH, TOKEN_PATH);
-gao.authenticate();
+// The ID of the sheet that holds the data
+const SHEET_ID = '1PvfOnhC4a0W5Vsop7hk3DFaq_hO9ZOp1bGbMc9cgkco';
 
-const gso = gsf('1PvfOnhC4a0W5Vsop7hk3DFaq_hO9ZOp1bGbMc9cgkco');
-
-gao.authorize(creds => gso.setCommAdapter({getAuth: () => creds}).read('src!A:A').then(
-	res => {
-		const rows = res.data.values;
+// Example use case from the Quickstart guide.
+googledb(CREDENTIALS_PATH, TOKEN_PATH, SHEET_ID).readSheetColumns('src', 0, 0).then(res => {
+	const rows = res.data.values;
 		if (rows.length) {
 			console.log('Blog Data:');
 
@@ -83,4 +81,4 @@ gao.authorize(creds => gso.setCommAdapter({getAuth: () => creds}).read('src!A:A'
 			console.log('No data found.');
 		}
 	}, err => console.log('The API returned an error: ' + err)
-));
+);

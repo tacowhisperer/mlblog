@@ -66,6 +66,17 @@ function sheetdbObject() {
 	};
 
 	/**
+	 * Reads the data of the specified cell of the sheet provided by the adapter.
+	 * @param {string} page The page name of the sheet to read.
+	 * @param {number} x The index of the row of the cell.
+	 * @param {number} y The index of the column of the cell.
+	 * @returns {Promise} The data of the content of the cell.
+	 */
+	this.readCell = async function(page, x, y) {
+		return await this.readSquare(page, x, x, y, y);
+	};
+
+	/**
 	 * Reads the data of the sheet provided by the adapter at the specified row/column index range.
 	 * @param {string} page The page name of the sheet to read.
 	 * @param {number} fromX The index of the starting row to read.
@@ -75,7 +86,7 @@ function sheetdbObject() {
 	 * @returns {Promise} The data obtained from the sheet.
 	 */
 	this.readSquare = async function(page, fromX, toX, fromY, toY) {
-		return commAdapter.getSheetContent(commAdapter.getSheetObject(), page, fromX, toX, fromY, toY);
+		return await commAdapter.getSheetContent(commAdapter.getSheetObject(), page, fromX, toX, fromY, toY);
 	};
 
 	/**
@@ -103,3 +114,6 @@ function sheetdbObject() {
 
 // Export the factory for access in other modules.
 exports.sheetdbFactory = sheetdbFactory;
+
+// Export the main object for inheritance in other modules.
+exports.sheetdbObject = sheetdbObject;

@@ -54,3 +54,6 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 		return jmapUser.format(await DB.readSheetRows('usrs', 0, Infinity));
 	};
 }
+
+// Export the factory for access in other modules.
+exports.mlblogFactory = mlblogFactory;

@@ -57,10 +57,15 @@ function googleSheetsObject(sheetId) {
 	 * @returns {Promise} The Promise of the data read from the specified range.
 	 */
 	this.read = async function(dataRange) {
-		return await sheets(commAdapter.getAuth()).spreadsheets.values.get({
-			spreadsheetId: SHEET_ID,
-			range: dataRange
-		});
+		try {
+			return await sheets(commAdapter.getAuth()).spreadsheets.values.get({
+				spreadsheetId: SHEET_ID,
+				range: dataRange
+			});
+		} catch (err) {
+			console.error('Error reading sheet data:', err);
+			return [];
+		}
 	};
 }
 
