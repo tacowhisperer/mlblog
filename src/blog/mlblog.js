@@ -16,7 +16,9 @@ function mlblogFactory(sheetDb, blogContentOrder, userContentOrder) {
 
 /**
  * The Mexico Lindo Blog Object. It connects to a blog database shaped like a spreadsheet, and returns the formatted
- * content in a JSON object for further processing.
+ * content in a JSON object for further processing. This object is implicitly treated as a Blog Object, which is not
+ * implemented in its own module. Instead, a Blog Object is assumed to only contain asynchronous methods that take no
+ * arguments and return data that can be processed through JSON.stringify and JSON.parse.
  * @param {sheetdbObject} sheetDb A sheet database object that is connected to the ml blog for reading its data.
  * @param {Array} blogContentOrder Array specifying the format of the blog content in the database.
  * @param {Array} userContentOrder Array specifying the format of the user content in the database.

@@ -6,24 +6,23 @@ const fs = require('fs');
 const engine = require('../engine/engine').engineFactory;
 
 /**
- * Creates an mlstorageObject that is used to store the data available at the mlblog to storage.
+ * Creates a blogreaderObject that is used to store the data available at the mlblog to storage.
  * @param {mlblogObject} mlblog The Mexico Lindo Blog object to poll data from.
  * @param {string} path The path to where the data should be stored.
  * @param {number} rate The number of ms between polls. Defaults to 30000.
  */
-function mlstorageFactory(mlblog, path, rate = 30000) {
-	return new mlstorageObject(mlblog, path, rate);
+function blogreaderFactory(mlblog, path, rate = 30000) {
+	return new blogreaderObject(mlblog, path, rate);
 }
 
 /**
- * Mexico Lindo Storage Object. Asynchronously polls the provided mlblog object and store the data to the provided
- * path.
- * @param {mlblogObject} mlblog The Mexico Lindo Blog object to poll data from.
+ * Blog Reader Object. Asynchronously polls the provided blog object and stores the data to the provided path.
+ * @param {mlblogObject} blog The Blog object to poll data from.
  * @param {string} path The path to where the data should be stored.
  * @param {number} rate The number of ms between polls. Defaults to 30000.
  */
-function mlstorageObject(mlblog, path, rate = 30000) {
-	const BLOG = mlblog;
+function blogreaderObject(blog, path, rate = 30000) {
+	const BLOG = blog;
 	const PATH = path;
 
 	// Polls the blog for data.
@@ -41,7 +40,7 @@ function mlstorageObject(mlblog, path, rate = 30000) {
 					update = true;
 				}
 			} catch (err) {
-				console.error(`Error reading ${mlblog.constructor.name}.${dbpage}:`, err);
+				console.error(`Error reading ${blog.constructor.name}.${dbpage}:`, err);
 			}
 		}
 
@@ -77,4 +76,4 @@ function mlstorageObject(mlblog, path, rate = 30000) {
 }
 
 // Export the factory for access in other modules.
-exports.mlstorageFactory = mlstorageFactory;
+exports.blogreaderFactory = blogreaderFactory;
