@@ -4,6 +4,7 @@
 
 const wf = require('./src/dir/watch').watchFactory;
 const googledb = require('./src/google/db/googledb').googledbFactory;
+const mlblog = require('./src/blog/mlblog').mlblogFactory;
 
 /**
  * Main controller of the Blog application. It combines the Google Sheets API with the Git directory repository
@@ -67,18 +68,18 @@ const CREDENTIALS_PATH = './google_auth/credentials.json';
 // The ID of the sheet that holds the data
 const SHEET_ID = '1PvfOnhC4a0W5Vsop7hk3DFaq_hO9ZOp1bGbMc9cgkco';
 
-// Example use case from the Quickstart guide.
-googledb(CREDENTIALS_PATH, TOKEN_PATH, SHEET_ID).readSheetColumns('src', 0, 0).then(res => {
-	const rows = res.data.values;
-		if (rows.length) {
-			console.log('Blog Data:');
+// mlblog content.
+const db = googledb(CREDENTIALS_PATH, TOKEN_PATH, SHEET_ID);
 
-			// Print columns A and E, which correspond to indices 0 and 4.
-			rows.map((row) => {
-				console.log(`${row[0]}`);
-			});
-		} else {
-			console.log('No data found.');
-		}
-	}, err => console.log('The API returned an error: ' + err)
-);
+const BLOG_FMT = ['date', 'username', 'title', 'link', 'content'];
+const USR_FMT = ['username', 'display', 'ppic', 'bio', 'link', 'bday'];
+
+const blog = mlblog(db, BLOG_FMT, USR_FMT);
+
+blog.blogContent().then(
+	res => res.filter(data => data.date !== undefined).map(x => console.log(x)),
+	err => console.error(`Error reading blog content:`, err));
+
+blog.usernameContent().then(
+	res => res.map(x => console.log(x)),
+	err => console.error(`Error reading username content:`, err));

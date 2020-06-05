@@ -42,7 +42,7 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	 */
 	this.blogContent = async function() {
 		const rawBlogContent = await DB.readSheetColumns('src', 0, 0);
-		const transBlogContent = DB.transposeArray(rawBlogContent);
+		const transBlogContent = DB.transposeArray(rawBlogContent)[0];
 
 		return jmapBlog.format(transBlogContent);
 	};
@@ -51,7 +51,9 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	 * Reads and parses the username content found in the blog at the Google Sheets database.
 	 */
 	this.usernameContent = async function() {
-		return jmapUser.format(await DB.readSheetRows('usrs', 0, Infinity));
+		const rawUserContent = await DB.readSheetRows('usrs', 0, 5);
+
+		return jmapUser.map(rawUserContent);
 	};
 }
 

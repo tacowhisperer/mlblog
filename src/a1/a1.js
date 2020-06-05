@@ -28,15 +28,17 @@ const MODE = {
 function toA1(colIdx, rowIdx, page = null, mode = MODE.RELATIVE) {
 	const PAGE = page == null ? '' : `${page}!`;
 	const ROW = rowIdx === Number.POSITIVE_INFINITY || rowIdx === Number.NEGATIVE_INFINITY ? '' : rowIdx + 1;
+	const COL = colIdx === Number.POSITIVE_INFINITY || colIdx === Number.NEGATIVE_INFINITY ? '' : toA1Column(colIdx);
+
 	switch (mode) {
 		case MODE.ABSOLUTE_COL:
-			return `${PAGE}$${toA1Column(colIdx)}${ROW}`;
+			return `${PAGE}$${COL}${ROW}`;
 		case MODE.ABSOLUTE_ROW:
-			return `${PAGE}${toA1Column(colIdx)}$${ROW}`;
+			return `${PAGE}${COL}$${ROW}`;
 		case MODE.ABSOLUTE:
-			return `${PAGE}$${toA1Column(colIdx)}$${ROW}`;
+			return `${PAGE}$${COL}$${ROW}`;
 		default:
-			return `${PAGE}${toA1Column(colIdx)}${ROW}`;
+			return `${PAGE}${COL}${ROW}`;
 	}
 }
 

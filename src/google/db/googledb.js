@@ -47,7 +47,9 @@ function googledbObject(credsPath, tokenPath, sheetId) {
 
 			// Authenticate and read the data from the sheet using the Google API.
 			const creds = await googleAuth.authorize();
-			return await googleSheets.setCommAdapter({getAuth: () => creds}).read(dataRange);
+			const res = await googleSheets.setCommAdapter({getAuth: () => creds}).read(dataRange);
+
+			return res.data.values;
 		}
 	});
 }

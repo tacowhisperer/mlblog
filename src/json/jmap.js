@@ -41,7 +41,7 @@ function jmapObject() {
 	/**
 	 * Formats the input array into a 1D array of JSON objects.
 	 * @param {Array} arr The input array of data that is formatted using the available format object from commAdapter.
-	 * @return {Array} An array of JSON objects corresponding to the grouped elements of the input array.
+	 * @returns {Array} An array of JSON objects corresponding to the grouped elements of the input array.
 	 */
 	this.format = function(arr) {
 		const FMT = commAdapter.getFormat();
@@ -80,6 +80,31 @@ function jmapObject() {
 			return map;
 		});
 	};
+
+	/**
+	 * Maps rows of data into a 1D array of JSON objects.
+	 * @param {Array} arr The input array of row data that is formatted using the format object from the commAdapter.
+	 * @returns {Array} An array of JSON objects corresponding to the grouped elements of the input matrix array.
+	 */
+	this.map = function(arr) {
+		const FMT = commAdapter.getFormat();
+
+		const ORDER = FMT.order;
+		const EXTRA_KEY = commAdapter.getExtraKey();
+
+		return arr.map(row => row.reduce((data, val, i) => {
+			const newData = Object.assign(Object.create({}), data);
+			if (i >= ORDER.length && !(newData[EXTRA_KEY] instanceof Array))
+				newData[EXTRA_KEY] = [];
+
+			if (i < ORDER.length)
+				newData[ORDER[i]] = val;
+			else
+				newData[EXTRA_KEY].push(val);
+
+			return newData;
+		}, Object.create({})));
+	}
 }
 
 // Export the factory for access in other modules.
