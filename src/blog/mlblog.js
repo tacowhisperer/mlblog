@@ -23,6 +23,7 @@ function mlblogFactory(sheetDb, blogContentOrder, userContentOrder) {
  */
 function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	const DB = sheetDb;
+	const B_ORDER = blogContentOrder;
 	
 	// Used for mapping blog content to their respective JSON objects for further processing.
 	const jmapBlog = jmapFactory().setCommAdapter({
@@ -44,7 +45,8 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 		const rawBlogContent = await DB.readSheetColumns('src', 0, 0);
 		const transBlogContent = DB.transposeArray(rawBlogContent)[0];
 
-		return jmapBlog.format(transBlogContent);
+		// Remove any blog entries that do not reach to the end of the order definition.
+		return jmapBlog.format(transBlogContent).filter(data => data[B_ORDER[B_ORDER.length - 1]] !== undefined);
 	};
 
 	/**

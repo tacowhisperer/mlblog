@@ -5,6 +5,7 @@
 const wf = require('./src/dir/watch').watchFactory;
 const googledb = require('./src/google/db/googledb').googledbFactory;
 const mlblog = require('./src/blog/mlblog').mlblogFactory;
+const mlstorage = require('./src/blog/mlstorage').mlstorageFactory;
 
 /**
  * Main controller of the Blog application. It combines the Google Sheets API with the Git directory repository
@@ -75,11 +76,14 @@ const BLOG_FMT = ['date', 'username', 'title', 'link', 'content'];
 const USR_FMT = ['username', 'display', 'ppic', 'bio', 'link', 'bday'];
 
 const blog = mlblog(db, BLOG_FMT, USR_FMT);
+const storage = mlstorage(blog, './');
 
-blog.blogContent().then(
-	res => res.filter(data => data.date !== undefined).map(x => console.log(x)),
-	err => console.error(`Error reading blog content:`, err));
+storage.start();
 
-blog.usernameContent().then(
-	res => res.map(x => console.log(x)),
-	err => console.error(`Error reading username content:`, err));
+// blog.blogContent().then(
+// 	res => res.map(x => console.log(x)),
+// 	err => console.error(`Error reading blog content:`, err));
+
+// blog.usernameContent().then(
+// 	res => res.map(x => console.log(x)),
+// 	err => console.error(`Error reading username content:`, err));
