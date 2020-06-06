@@ -76,6 +76,6 @@ const BLOG_FMT = ['date', 'username', 'title', 'link', 'content'];
 const USR_FMT = ['username', 'display', 'ppic', 'bio', 'link', 'bday'];
 
 const blog = mlblog(db, BLOG_FMT, USR_FMT);
-const reader = blogreader(blog, './');
+const reader = blogreader(blog, data => console.log(data));
 
 reader.start();

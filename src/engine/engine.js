@@ -37,16 +37,17 @@ function engineObject(interval, reps = Infinity) {
 
 	// Generates a new event loop to execute the function handlers every INTERVAL milliseconds.
 	const EVENT_LOOP = () => {
-		return setInterval(() => {
-
+		const loop = () => {
 			for (let i = 0; i < handlers.length; i++) {
 				if (handlers[i].rep < REPS) {
 					handlers[i].call();
 					handlers[i].reps++;
 				}
 			}
+		}
 
-		}, INTERVAL);
+		loop();
+		return setInterval(loop, INTERVAL);
 	};
 
 	/**
