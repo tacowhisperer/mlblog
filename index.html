@@ -39,6 +39,9 @@
 					const entryDate = document.createElement('h3');
 					entryDate.appendChild(document.createTextNode(blogContent[i].date));
 
+					// Add the date to the main body for now.
+					document.body.appendChild(entryDate);
+
 					const content = blogContent[i].content.split('\n');
 					for (let j = 0; j < content.length; j++) {
 						const entryContentParagraph = document.createElement('p');
