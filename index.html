@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Look at how quirky this page title is, hire me to do your promotions, please. -->
+	<title>Mexico Lindo bLoG</title>
+	
+	<style>
+		* {
+			font-family: monospace;
+		}
+	</style>
+
+	<!-- I guess it would be nice for everything to fucking work lol. -->
+	<script type="text/javascript">
+		function fetchJSON(path, callback) {
+			const httpRequest = new XMLHttpRequest();
+
+			httpRequest.onreadystatechange = function() {
+				if (httpRequest.readyState === 4 && httpRequest.status === 200)
+					callback(JSON.parse(httpRequest.responseText));
+			};
+
+			httpRequest.open('GET', path);
+			httpRequest.send();
+		}
+
+		window.addEventListener('load', e => {
+			fetchJSON('./www/mlblogObject.json', function(data) {
+				const blogContent = data.blogContent;
+
+				// Go through each blog entry and lazily add it to the main page until a proper view is implemented.
+				for (let i = 0; i < blogContent.length; i++) {
+					const entryTitle = document.createElement('h1');
+					entryTitle.appendChild(document.createTextNode(blogContent[i].title));
+
+					// Add the blog entry to the main body for now.
+					document.body.appendChild(entryTitle);
+
+					const content = blogContent[i].content.split('\n');
+					for (let j = 0; j < content.length; j++) {
+						const entryContentParagraph = document.createElement('p');
+						entryContentParagraph.appendChild(document.createTextNode(content[j]));
+
+						// Add the blog content to the main body for now.
+						document.body.appendChild(entryContentParagraph);
+					}
+				}
+			})
+		});
+	</script>
+</head>
+
+<body>
+</body>
+</html>
