@@ -65,7 +65,12 @@ function app() {
 	// Initialize the file watcher
 	const comm = {
 		getGitHomePath: () => './',
-		getCommitMessage: () => log(`Successfully committed ${BLOG_FILE} update data.`)
+		getCommitMessage: () => {
+			const msg = `Successfully committed ${BLOG_FILE} update data.`;
+			log(msg);
+
+			return `${new Date()}: ${msg}`;
+		}
 	};
 
 	const mlwatch = watch(WEB_DIR).attach((eventType, fileName) => {
