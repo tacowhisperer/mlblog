@@ -22,6 +22,7 @@ function blogreaderFactory(blog, path, rate = 30000) {
  */
 function blogreaderObject(blog, fn, rate = 30000) {
 	const BLOG = blog;
+	const FUNC = fn;
 
 	// Hold the last obtained data from storage to prevent writing to storage too much.
 	const LAST_DATA = Object.create({});
@@ -48,8 +49,12 @@ function blogreaderObject(blog, fn, rate = 30000) {
 		}
 
 		// Call the handler function when there is an update to the blog data.
-		if (update)
-			fn(expand());
+		if (update) {
+			const data = Object.create({});
+			data[blog.constructor.name] = expand();
+			
+			FUNC(data);
+		}
 	});
 
 	// Stores data to the LAST_DATA object in a way that allows for easy content comparison.
