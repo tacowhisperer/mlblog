@@ -36,6 +36,7 @@
 			fetchJSON('./www/mlblogObject.json', function(data) {
 				const blogContent = data.blogContent;
 				const usr = data.usernameContent;
+				console.log(JSON.stringify(usr, null, 4));
 
 				// Go through each blog entry and lazily add it to the main page until a proper view is implemented.
 				for (let i = 0; i < blogContent.length; i++) {
@@ -46,7 +47,7 @@
 					document.body.appendChild(entryTitle);
 
 					const entryMeta = document.createElement('h3');
-					const entryMetaTxt = `${blogContent[i].date} by ${usr[blogContent[i].username].display}`;
+					// const entryMetaTxt = `${blogContent[i].date} by ${usr[blogContent[i].username].display}`;
 					entryMeta.appendChild(document.createTextNode(entryMetaTxt));
 
 					// Add the date to the main body for now.
