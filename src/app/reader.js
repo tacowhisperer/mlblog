@@ -31,7 +31,7 @@ function readerObject(fn) {
 
 	// Data format as it's stored in the Google Sheet.
 	const BLOG_FMT = ['date', 'username', 'title', 'link', 'content'];
-	const USR_FMT = ['username', 'display', 'ppic', 'bio', 'link', 'bday'];
+	const USR_FMT = {username: ['username', 'display', 'ppic', 'bio', 'link', 'bday']};
 
 	// Poller for the blog
 	const reader = blogreader(mlblog(googledb(CREDENTIALS_PATH, TOKEN_PATH, SHEET_ID), BLOG_FMT, USR_FMT), fn);

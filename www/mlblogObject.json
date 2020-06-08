@@ -1,6 +1,13 @@
 {
         "blogContent": [
                 {
+                        "date": "6/7/2020 15:37:49",
+                        "username": "tacowhisperer",
+                        "title": "Title",
+                        "link": "Title Link",
+                        "content": "Luisito shitstorm, myhandslooklikethismeme, busybusybusy, Oscar.com awkward tipping situation"
+                },
+                {
                         "date": "6/6/2020 15:40:46",
                         "username": "tacowhisperer",
                         "title": "Title for cutest couple has officially been claimed, prove me wrong.",
@@ -99,22 +106,13 @@
                         "content": "Welcome to the new Mexico Lindo blog! This is the place where I record the shenanigans happening at Mexico Lindo on Old Galveston road in the small suburb of South Houston, Texas. You won't be able to hear a goddamn thing walking into the store since the fans will grind your eardrums to a pulp, but here you will read about the best tales of all the crackheads that walk in, the fist fights that emerge between the grandmas, drunks, punks, and skanks, and the endless stream of Karens and shit-for-brains fuckheads that walk through those god awful \"sliding\" doors we all conventionally call an entrance. \n\nTo kick things off, today officially marks the first day that both the morning cashiers and the afternoon cashiers know that there are only 2 more hand baskets left for the entire store. Maybe someone will finally realize that the basket holder that trips everyone over should be taken out before someone gets injured, but I actually predict that people will just keep asking for baskets until one day our only choice will be to tell them that this place doesn't have handheld baskets, and that they should have thought about how stupid they must feel for asking before daring to ask for a small and reasonable accomodation from our overlords.... errr.. managers (if you're reading this and you're a manager at Mexico Lindo, much love and praise and respec <3)."
                 }
         ],
-        "usernameContent": [
-                {
-                        "username": "tacowhisperer",
+        "usernameContent": {
+                "tacowhisperer": {
                         "display": "Andres S.",
                         "ppic": "https://pbs.twimg.com/profile_banners/389773262/1470411492/600x200",
                         "bio": "What do the tacos say?",
                         "link": "https://github.com/tacowhisperer",
                         "bday": "October 10, 1994"
-                },
-                {
-                        "username": "Username",
-                        "display": "Display Name",
-                        "ppic": "Profile Pic URL",
-                        "bio": "Bio",
-                        "link": "Personal Link",
-                        "bday": "Birthdate"
                 }
-        ]
+        }
 }

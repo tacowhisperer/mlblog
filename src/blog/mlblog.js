@@ -21,11 +21,22 @@ function mlblogFactory(sheetDb, blogContentOrder, userContentOrder) {
  * arguments and return data that can be processed through JSON.stringify and JSON.parse.
  * @param {sheetdbObject} sheetDb A sheet database object that is connected to the ml blog for reading its data.
  * @param {Array} blogContentOrder Array specifying the format of the blog content in the database.
- * @param {Array} userContentOrder Array specifying the format of the user content in the database.
+ * @param {Object} userContentOrder Single key object where the key is the identifier that is mapped to Array specifying
+ *                                  the format of the user content in the database.
  */
 function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	const DB = sheetDb;
+
 	const B_ORDER = blogContentOrder;
+	const U_KEY = (function() {
+		const keys = Object.entries(userContentOrder);
+
+		if (keys.length === 1)
+			return keys[0][0];
+
+		throw `Error: Can't have more than 1 primary key in user content. Got ${keys.length}`;
+	})();
+	const U_ORDER = userContentOrder[U_KEY];
 	
 	// Used for mapping blog content to their respective JSON objects for further processing.
 	const jmapBlog = jmapFactory().setCommAdapter({
@@ -35,7 +46,7 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 
 	// Used for mapping user content to their respective JSON objects for further processing.
 	const jmapUser = jmapFactory().setCommAdapter({
-		getFormat: () => Object.create({delim: null, order: userContentOrder}),
+		getFormat: () => Object.create({delim: null, order: U_ORDER}),
 		getExtraKey: () => 'EXTRA'
 	});
 
@@ -57,7 +68,20 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	this.usernameContent = async function() {
 		const rawUserContent = await DB.readSheetRows('usrs', 0, 5);
 
-		return jmapUser.map(rawUserContent);
+		return jmapUser.map(rawUserContent).reduce((users, user) => {
+			const userData = Object.assign(Object.create({}), users);
+
+			// Remove the primary key from the resulting output.
+			if (user[U_KEY] !== 'Username') {
+				userData[user[U_KEY]] = Object.create({});
+				for (let prop in user) {
+					if (prop != U_KEY)
+						userData[user[U_KEY]][prop] = user[prop];
+				}
+			}
+
+			return userData;
+		}, Object.create({}));
 	};
 }
 

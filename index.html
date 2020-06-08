@@ -6,9 +6,14 @@
 
 	<!-- Mobile "support" -->
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+
+	<!-- Chrome tab color -->
+	<meta name="theme-color" content="#000000">
 	
 	<style>
 		* {
+			background: black;
+			color: #bbb;
 			font-family: monospace;
 		}
 	</style>
@@ -30,6 +35,7 @@
 		window.addEventListener('load', e => {
 			fetchJSON('./www/mlblogObject.json', function(data) {
 				const blogContent = data.blogContent;
+				const usr = data.usernameContent;
 
 				// Go through each blog entry and lazily add it to the main page until a proper view is implemented.
 				for (let i = 0; i < blogContent.length; i++) {
@@ -39,11 +45,12 @@
 					// Add the blog entry to the main body for now.
 					document.body.appendChild(entryTitle);
 
-					const entryDate = document.createElement('h3');
-					entryDate.appendChild(document.createTextNode(blogContent[i].date));
+					const entryMeta = document.createElement('h3');
+					const entryMetaTxt = `${blogContent[i].date} by ${usr[blogContent[i].username].display}`;
+					entryMeta.appendChild(document.createTextNode(entryMetaTxt));
 
 					// Add the date to the main body for now.
-					document.body.appendChild(entryDate);
+					document.body.appendChild(entryMeta);
 
 					const content = blogContent[i].content.split('\n');
 					for (let j = 0; j < content.length; j++) {
