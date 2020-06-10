@@ -19,6 +19,7 @@
   "dependencies": {
     "googleapis": "^39.2.0",
     "readline-sync": "^1.4.10",
+    "showdown": "^1.9.1",
     "simple-git": "^2.5.0"
   }
 }

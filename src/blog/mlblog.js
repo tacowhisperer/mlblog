@@ -2,6 +2,7 @@
  * @author tacowhisperer
  */
 
+const Converter = require('showdown').Converter;
 const jmapFactory = require('../json/jmap').jmapFactory;
 
 /**
@@ -20,27 +21,33 @@ function mlblogFactory(sheetDb, blogContentOrder, userContentOrder) {
  * implemented in its own module. Instead, a Blog Object is assumed to only contain asynchronous methods that take no
  * arguments and return data that can be processed through JSON.stringify and JSON.parse.
  * @param {sheetdbObject} sheetDb A sheet database object that is connected to the ml blog for reading its data.
- * @param {Array} blogContentOrder Array specifying the format of the blog content in the database.
+ * @param {Object} blogContentOrder Single key object where the key is the identifier that is mapped to Array specifying
+ *                                  the format of the blog content in the database.
  * @param {Object} userContentOrder Single key object where the key is the identifier that is mapped to Array specifying
  *                                  the format of the user content in the database.
  */
 function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	const DB = sheetDb;
+	const MD = new Converter();
 
-	const B_ORDER = blogContentOrder;
-	const U_KEY = (function() {
-		const keys = Object.entries(userContentOrder);
+	const getMainKey = function(contentOrder) {
+		const keys = Object.entries(contentOrder);
 
 		if (keys.length === 1)
 			return keys[0][0];
 
-		throw `Error: Can't have more than 1 primary key in user content. Got ${keys.length}`;
-	})();
+		throw `Error: Can't have more than 1 primary key in content mapping. Got ${keys.length} primary keys.`;
+	};
+
+	const B_KEY = getMainKey(blogContentOrder);
+	const B_ORDER = blogContentOrder[B_KEY];
+
+	const U_KEY = getMainKey(userContentOrder);
 	const U_ORDER = userContentOrder[U_KEY];
 	
 	// Used for mapping blog content to their respective JSON objects for further processing.
 	const jmapBlog = jmapFactory().setCommAdapter({
-		getFormat: () => Object.create({delim: '---', order: blogContentOrder}),
+		getFormat: () => Object.create({delim: '---', order: B_ORDER}),
 		getExtraKey: () => 'IMAGES'
 	});
 
@@ -60,6 +67,19 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 
 		// Remove any blog entries that do not reach to the end of the order definition.
 		return jmapBlog.format(transBlogContent).filter(data => data[B_ORDER[B_ORDER.length - 1]] !== undefined);
+	};
+
+	/**
+	 * Takes the content obtained from the blogContent method, but instead returns content as markdown HTML instead
+	 * of plaintext.
+	 */
+	this.blogContentHtml = async function() {
+		const blogContent = await this.blogContent();
+
+		return blogContent.map(entry => {
+			entry[B_KEY] = MD.makeHtml(entry[B_KEY]);
+			return entry;
+		});
 	};
 
 	/**

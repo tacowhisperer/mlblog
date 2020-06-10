@@ -30,7 +30,7 @@ function readerObject(fn) {
 	const SHEET_ID = '1PvfOnhC4a0W5Vsop7hk3DFaq_hO9ZOp1bGbMc9cgkco';
 
 	// Data format as it's stored in the Google Sheet.
-	const BLOG_FMT = ['date', 'username', 'title', 'link', 'content'];
+	const BLOG_FMT = {content: ['date', 'username', 'title', 'link', 'content']};
 	const USR_FMT = {username: ['username', 'display', 'ppic', 'bio', 'link', 'bday']};
 
 	// Poller for the blog
