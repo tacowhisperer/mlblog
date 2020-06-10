@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Mobile "support" -->
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+
+	<!-- Chrome tab color -->
+	<meta name="theme-color" content="#000000">
+
+	<style type="text/css">
+		body {
+			font-family: monospace;
+		}
+
+		@media all and (orientation: landscape) {
+			body::before {
+				content: "desktop landscape";
+			}
+		}
+
+		@media all and (min-width: 960px) and (max-width: 1024px) and (orientation: landscape) {
+			body {
+				background-color: red;
+			}
+
+			body::before {
+				content: "mobile landscape";
+			}
+		}
+
+		@media all and (min-width: 801px) and (max-width: 959px) and (orientation: landscape) {
+			body {
+				background-color: orange;
+			}
+
+			body::before {
+				content: "mobile landscape";
+			}
+		}
+
+		@media all and (min-width: 769px) and (max-width: 800px) and (orientation: landscape) {
+			body {
+				background-color: yellow;
+			}
+
+			body::before {
+				content: "mobile landscape";
+			}
+		}
+
+		@media all and (min-width: 569px) and (max-width: 768px) and (orientation: landscape) {
+			body {
+				background-color: green;
+			}
+
+			body::before {
+				content: "mobile landscape";
+			}
+		}
+
+		@media all and (min-width: 481px) and (max-width: 568px) and (orientation: landscape) {
+			body {
+				background-color: blue;
+			}
+
+			body::before {
+				content: "mobile landscape";
+			}
+		}
+
+		@media all and (min-width: 321px) and (max-width: 480px) and (orientation: landscape) {
+			body {
+				background-color: indigo;
+			}
+
+			body::before {
+				content: "mobile landscape";
+			}
+		}
+
+		@media all and (min-width: 0px) and (max-width: 320px) and (orientation: landscape) {
+			body {
+				background-color: violet;
+			}
+
+			body::before {
+				content: "mobile landscape";
+			}
+		}
+
+		@media all and (orientation: portrait) {
+			body::before {
+				content: "desktop portrait";
+			}
+		}
+		
+		@media all and (min-width: 960px) and (max-width: 1024px) and (orientation: portrait) {
+			body {
+				background-color: red;
+			}
+
+			body::before {
+				content: "mobile portrait";
+			}
+		}
+
+		@media all and (min-width: 801px) and (max-width: 959px) and (orientation: portrait) {
+			body {
+				background-color: orange;
+			}
+
+			body::before {
+				content: "mobile portrait";
+			}
+		}
+
+		@media all and (min-width: 769px) and (max-width: 800px) and (orientation: portrait) {
+			body {
+				background-color: yellow;
+			}
+
+			body::before {
+				content: "mobile portrait";
+			}
+		}
+
+		@media all and (min-width: 569px) and (max-width: 768px) and (orientation: portrait) {
+			body {
+				background-color: green;
+			}
+
+			body::before {
+				content: "mobile portrait";
+			}
+		}
+
+		@media all and (min-width: 481px) and (max-width: 568px) and (orientation: portrait) {
+			body {
+				background-color: blue;
+			}
+
+			body::before {
+				content: "mobile portrait";
+			}
+		}
+
+		@media all and (min-width: 321px) and (max-width: 480px) and (orientation: portrait) {
+			body {
+				background-color: indigo;
+			}
+
+			body::before {
+				content: "mobile portrait";
+			}
+		}
+
+		@media all and (min-width: 0px) and (max-width: 320px) and (orientation: portrait) {
+			body {
+				background-color: violet;
+			}
+
+			body::before {
+				content: "mobile portrait";
+			}
+		}
+	</style>
+
+	<script type="text/javascript">
+		function displayScreenDim(e) {
+			e.innerHTML = `Size: ${window.innerWidth} x ${window.innerHeight}`;
+		}
+
+		window.addEventListener('load', () => {
+			const p = document.getElementById('size');
+
+			displayScreenDim(p);
+			window.addEventListener('resize', () => displayScreenDim(p));
+		});
+	</script>
+</head>
+<body>
+	<p id="size"></p>
+</body>
+</html>
