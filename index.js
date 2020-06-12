@@ -74,7 +74,7 @@ function app() {
 	};
 
 	const mlwatch = watch(WEB_DIR).attach((eventType, fileName) => {
-		if (fileName === BLOG_FILE) {
+		if (fileName === BLOG_FILE && eventType === 'change') {
 			gitpush(BLOG_DATA_PATH).setCommAdapter(comm).push(err => {
 				if (err)
 					console.error('Error pushing data to GitHub:', err);
