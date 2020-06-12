@@ -71,13 +71,12 @@ function gitPushObject(filePath) {
 				}
 			}
 
-			if (!modded)
-				throw `Error: Watched file "${PATH}" is up to date.`;
-
 			// The file we are watching is modified, so push the changes to the master repository.
-			await git.add('.' + path.sep + PATH);
-			await git.commit(commAdapter.getCommitMessage());
-			await git.push('origin', 'master');
+			if (modded) {			
+				await git.add('.' + path.sep + PATH);
+				await git.commit(commAdapter.getCommitMessage());
+				await git.push('origin', 'master');
+			}
 
 			callback(null);
 		} catch (err) {
