@@ -2,9 +2,9 @@
         "blogContent": [
                 {
                         "date": "6/12/2020 22:14:20",
-                        "username": "Username",
-                        "title": "Title",
-                        "link": "Title Link",
+                        "username": "tacowhisperer",
+                        "title": "We desparately need elementary education reform",
+                        "link": "https://i.pinimg.com/originals/97/a3/b9/97a3b92384b62eb04566a457f6d76f6c.gif",
                         "content": "Blog Text"
                 },
                 {
@@ -144,9 +144,9 @@
         "blogContentHtml": [
                 {
                         "date": "6/12/2020 22:14:20",
-                        "username": "Username",
-                        "title": "Title",
-                        "link": "Title Link",
+                        "username": "tacowhisperer",
+                        "title": "We desparately need elementary education reform",
+                        "link": "https://i.pinimg.com/originals/97/a3/b9/97a3b92384b62eb04566a457f6d76f6c.gif",
                         "content": "<p>Blog Text</p>"
                 },
                 {

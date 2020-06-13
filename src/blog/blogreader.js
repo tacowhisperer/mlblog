@@ -31,6 +31,8 @@ function blogreaderObject(blog, fn, rate = 30000) {
 
 	// Polls the blog for data.
 	const rEngine = engine(rate).add(async () => {
+		log(`Polling blog for change.`);
+
 		let update = false;
 
 		// Check all pages of the blog for data changes.
@@ -85,6 +87,13 @@ function blogreaderObject(blog, fn, rate = 30000) {
 	this.stop = function() {
 		rEngine.stop();
 	};
+
+	/**
+	 * Attach a timestamp to the log to know when a message was generated.
+	 */
+	function log(msg) {
+		console.log(`${new Date()}: ${msg}`);
+	}
 }
 
 // Export the factory for access in other modules.

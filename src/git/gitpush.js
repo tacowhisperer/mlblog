@@ -74,8 +74,13 @@ function gitPushObject(filePath) {
 			// The file we are watching is modified, so push the changes to the master repository.
 			if (modded) {			
 				await git.add('.' + path.sep + PATH);
+				log(`Successfully added ${'.' + path.sep + PATH}`);
+
 				await git.commit(commAdapter.getCommitMessage());
+				log(`Successfully committed ${'.' + path.sep + PATH}`);
+
 				await git.push('origin', 'master');
+				log(`Successfully pushed ${'.' + path.sep + PATH} to origin master`);
 			}
 
 			callback(null);
@@ -83,6 +88,13 @@ function gitPushObject(filePath) {
 			callback(err);
 		}
 	};
+
+	/**
+	 * Attach a timestamp to the log to know when a message was generated.
+	 */
+	function log(msg) {
+		console.log(`${new Date()}: ${msg}`);
+	}
 }
 
 // Export the factory for access in other modules.

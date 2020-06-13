@@ -66,7 +66,7 @@ function app() {
 	const comm = {
 		getGitHomePath: () => './',
 		getCommitMessage: () => {
-			const msg = `Successfully committed ${BLOG_FILE} update data.`;
+			const msg = `Updated ${BLOG_FILE} data from database.`;
 			log(msg);
 
 			return `${new Date()}: ${msg}`;
