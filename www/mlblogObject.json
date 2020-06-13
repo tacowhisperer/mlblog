@@ -1,6 +1,13 @@
 {
         "blogContent": [
                 {
+                        "date": "6/12/2020 22:14:20",
+                        "username": "Username",
+                        "title": "Title",
+                        "link": "Title Link",
+                        "content": "Blog Text"
+                },
+                {
                         "date": "6/11/2020 19:34:48",
                         "username": "tacowhisperer",
                         "title": "Hamburger bread is king, and we its entourage",
@@ -135,6 +142,13 @@
                 }
         ],
         "blogContentHtml": [
+                {
+                        "date": "6/12/2020 22:14:20",
+                        "username": "Username",
+                        "title": "Title",
+                        "link": "Title Link",
+                        "content": "<p>Blog Text</p>"
+                },
                 {
                         "date": "6/11/2020 19:34:48",
                         "username": "tacowhisperer",
