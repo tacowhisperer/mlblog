@@ -9,16 +9,31 @@
 
 	<!-- Chrome tab color -->
 	<meta name="theme-color" content="#000000">
+
+	<!-- Uniform monospace font -->
+	<link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
 	
 	<style>
 		* {
 			background: black;
 			color: #bbb;
-			font-family: monospace;
+			font-family: 'Inconsolata', monospace;
+		}
+
+		.dropdown {
+			display: none;
 		}
 
 		p {
 			overflow-wrap: break-word;
+		}
+
+		h1 {
+			margin-bottom: 0;
+		}
+
+		h3 {
+			margin-top: 0;
 		}
 
 		img {
@@ -226,47 +241,94 @@
 		}
 
 		window.addEventListener('load', e => {
+			const contentBody = document.getElementById('content');
+
+			// Fetch the blog content
 			fetchJSON('./www/mlblogObject.json', function(data) {
 				const blogContent = data.blogContent;
 				const usr = data.usernameContent;
 
-				// Go through each blog entry and lazily add it to the main page until a proper view is implemented.
-				for (let i = 0; i < blogContent.length; i++) {
-					const entryTitle = document.createElement('h1');
-					entryTitle.appendChild(document.createTextNode(blogContent[i].title));
+				function createPost(i, hide = false) {
+					// Capture this blog content data
+					const blogData = blogContent[i];
 
-					// Add the blog entry to the main body for now.
-					document.body.appendChild(entryTitle);
+					// Holds the contents of this particular blog entry.
+					const blogEntry = document.createElement('div');
+
+					const entryTitle = document.createElement('h1');
+					entryTitle.appendChild(document.createTextNode(blogData.title));
 
 					const entryMeta = document.createElement('h3');
+					const entryMetaDropdown = document.createElement('span');
+					entryMetaDropdown.appendChild(document.createTextNode('⇕ '));
+					entryMeta.appendChild(entryMetaDropdown);
+
 					try {
-						const entryMetaTxt = `${blogContent[i].date} by ${usr[blogContent[i].username].display}`;
+						const entryMetaTxt = `${blogData.date} by ${usr[blogData.username].display}`;
 						entryMeta.appendChild(document.createTextNode(entryMetaTxt));
 					} catch (e) {
-						entryMeta.appendChild(document.createTextNode(`${blogContent[i].date}`));
+						entryMeta.appendChild(document.createTextNode(`${blogData.date}`));
 					}
 
-					// Add the date to the main body for now.
-					document.body.appendChild(entryMeta);
+					const postMeat = () => {
+						entryMetaDropdown.classList.add('dropdown');
 
-					// Add the media associated with the post
-					const mime = blogContent[i].link.split('`')[1];
-					document.body.appendChild(getMediaElement(blogContent[i].date, mime));
+						// Add the media associated with the post
+						const mime = blogData.link.split('`')[1];
+						blogEntry.appendChild(getMediaElement(blogData.date, mime));
 
-					const content = blogContent[i].content.split('\n');
-					for (let j = 0; j < content.length; j++) {
-						const entryContentParagraph = document.createElement('p');
-						entryContentParagraph.appendChild(document.createTextNode(content[j]));
+						const content = blogData.content.split('\n');
+						for (let j = 0; j < content.length; j++) {
+							const entryContentParagraph = document.createElement('p');
+							entryContentParagraph.appendChild(document.createTextNode(content[j]));
 
-						// Add the blog content to the main body for now.
-						document.body.appendChild(entryContentParagraph);
-					}
+							// Add the blog content to the main body for now.
+							blogEntry.appendChild(entryContentParagraph);
+						}
+					};
+
+					// Add the blog entry to their respective parent containers
+					blogEntry.appendChild(entryTitle);
+					blogEntry.appendChild(entryMeta);
+					if (hide) {
+						let init = false;
+						blogEntry.addEventListener('click', e => {
+							if (!init) {
+								init = true;
+								postMeat();
+							}
+						});
+					} else postMeat();
+					contentBody.appendChild(blogEntry);
 				}
-			})
+
+				createPost(0);
+
+				// Go through each blog entry and lazily add it to the main page until a proper view is implemented.
+				for (let i = 1; i < blogContent.length; i++)
+					createPost(i, true);
+			});
+
+			// Populate the blog header
+			const contentHead = document.getElementById('header');
+			const contentImages = '.'.repeat(4).split('').map((x, i) => {
+				const img = document.createElement('img');
+				img.setAttribute('src', `./www/asset/blog/header/logo_${i + 1}.png`);
+
+				return img;
+			});
+
+			let I = 0;
+			setInterval(() => {
+				contentHead.innerHTML = '';
+				contentHead.appendChild(contentImages[I++ % 4]);
+			}, 1000);
 		});
 	</script>
 </head>
 
 <body>
+	<div id="header"></div>
+	<div id="content"></div>
 </body>
 </html>
