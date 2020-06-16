@@ -15,6 +15,9 @@
 			background: black;
 			color: #bbb;
 			font-family: monospace;
+		}
+
+		p {
 			overflow-wrap: break-word;
 		}
 
@@ -204,6 +207,7 @@
 
 				case '.mp4':
 					var video = document.createElement('video');
+					video.setAttribute('playsinline', '');
 
 					var source = document.createElement('source');
 					source.setAttribute('src', file);
