@@ -14,10 +14,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet">
 	
 	<style>
-		* {
-			background: black;
-			color: #bbb;
+		body {
 			font-family: 'Inconsolata', monospace;
+			-webkit-text-size-adjust: 85%;
 		}
 
 		.dropdown {
@@ -48,6 +47,21 @@
 
 	<!-- I guess it would be nice for everything to fucking work lol. -->
 	<script type="text/javascript">
+		function doubleclick(el, onsingle, ondouble) {
+			if (el.getAttribute("data-dblclick") == null) {
+				el.setAttribute("data-dblclick", 1);
+				setTimeout(function () {
+					if (el.getAttribute("data-dblclick") == 1) {
+						onsingle(el);
+					}
+					el.removeAttribute("data-dblclick");
+				}, 300);
+			} else {
+				el.removeAttribute("data-dblclick");
+				ondouble(el);
+			}
+		}
+
 		function fetchJSON(path, callback) {
 			const httpRequest = new XMLHttpRequest();
 
@@ -303,10 +317,14 @@
 					contentBody.appendChild(blogEntry);
 				}
 
-				createPost(0);
+				const DISP_DAYS = 7
 
-				// Go through each blog entry and lazily add it to the main page until a proper view is implemented.
-				for (let i = 1; i < blogContent.length; i++)
+				// Display latest week of posts
+				for (let i = 0; i < DISP_DAYS && i < blogContent.length; i++)
+					createPost(i, false);
+
+				// Add all other blog entries as collapsed titles
+				for (let i = DISP_DAYS; i < blogContent.length; i++)
 					createPost(i, true);
 			});
 
@@ -315,6 +333,24 @@
 			const contentSources = '.'.repeat(4).split('').map((x, i) => {
 				return `./www/asset/blog/header/logo_${i + 1}.png`;
 			});
+
+			// Background states
+			const DARK = false;
+			const LIGHT = true;
+			let BG_STATE = JSON.parse(window.localStorage.getItem('BG_STATE')) || DARK;
+
+			function setBodyBackground() {
+				document.body.style.background = BG_STATE == DARK ? 'black' : 'white';
+				document.body.style.color = BG_STATE == DARK ? '#eee' : 'black';
+				window.localStorage.setItem('BG_STATE', JSON.stringify(BG_STATE));
+			}
+
+			setBodyBackground();
+			setTimeout(() => document.body.style.transition = 'all 500ms ease', 750);
+			contentHead.parentElement.addEventListener('click', e => doubleclick(contentHead.parentElement, () => {}, () => {
+				BG_STATE = !BG_STATE;
+				setBodyBackground();
+			}));
 
 			let I = 0;
 			setInterval(() => contentHead.setAttribute('src', contentSources[I++ % 4]), 1000);
