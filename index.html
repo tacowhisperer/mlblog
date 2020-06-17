@@ -17,7 +17,7 @@
 		* {
 			touch-action: manipulation;
 		}
-		
+
 		body {
 			font-family: 'Inconsolata', monospace;
 			-webkit-text-size-adjust: 85%;
@@ -344,7 +344,7 @@
 			let BG_STATE = JSON.parse(window.localStorage.getItem('BG_STATE')) || DARK;
 
 			function setBodyBackground() {
-				document.body.style.background = BG_STATE == DARK ? 'black' : 'white';
+				document.body.style.background = BG_STATE == DARK ? 'black' : 'rgb(248,242,234)';
 				document.body.style.color = BG_STATE == DARK ? '#eee' : 'black';
 				window.localStorage.setItem('BG_STATE', JSON.stringify(BG_STATE));
 			}
