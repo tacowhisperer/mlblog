@@ -284,7 +284,8 @@
 					const entryTitle = document.createElement('h1');
 					entryTitle.appendChild(document.createTextNode(blogData.title));
 					entryTitle.addEventListener('click', e => {
-						entryTitle.scrollIntoView(true);
+						// Delay to make sure content has loaded before scroll to top is active.
+						setTimeout(() => entryTitle.scrollIntoView(true), 100);
 					});
 
 					const entryMeta = document.createElement('h3');
