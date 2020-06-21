@@ -33,10 +33,16 @@
 		}
 
 		h1 {
+			cursor: pointer;
 			margin-bottom: 0;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
 		}
 
 		h3 {
+			cursor: default;
 			font-size: 1em;
 			margin-top: 0;
 		}
@@ -277,6 +283,9 @@
 
 					const entryTitle = document.createElement('h1');
 					entryTitle.appendChild(document.createTextNode(blogData.title));
+					entryTitle.addEventListener('click', e => {
+						entryTitle.scrollIntoView(true);
+					});
 
 					const entryMeta = document.createElement('h3');
 					const entryMetaDropdown = document.createElement('span');
