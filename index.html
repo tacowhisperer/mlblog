@@ -282,6 +282,7 @@
 					const blogEntry = document.createElement('div');
 
 					const entryTitle = document.createElement('h1');
+					entryTitle.classList.add('entry_title');
 					entryTitle.appendChild(document.createTextNode(blogData.title));
 					entryTitle.addEventListener('click', e => {
 						// Delay to make sure content has loaded before scroll to top is active.
@@ -289,6 +290,7 @@
 					});
 
 					const entryMeta = document.createElement('h3');
+					entryTitle.classList.add('entry_meta');
 					const entryMetaDropdown = document.createElement('span');
 					entryMetaDropdown.appendChild(document.createTextNode('⇕ '));
 					entryMeta.appendChild(entryMetaDropdown);
