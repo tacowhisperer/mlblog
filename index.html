@@ -12,6 +12,9 @@
 
 	<!-- Uniform monospace font -->
 	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet">
+
+	<!-- Date.js -->
+	<script type="text/javascript" src="/www/src/date/date.min.js"></script>
 	
 	<style>
 		* {
@@ -23,28 +26,72 @@
 			-webkit-text-size-adjust: 85%;
 		}
 
-		.dropdown {
+		.hide_me {
 			display: none;
 		}
 
-		p {
+		.entry_author {
+
+		}
+
+		.master_author {
+			background: linear-gradient(270deg, #ff0000, #ffaa0b, #ffea00, #05c700, #008bf4, #854dff, #008bf4, #05c700, #ffea00, #ffaa0b, #ff0000);
+			background-size: 200% 100%;
+
+			-webkit-background-clip: text;
+			background-clip: text;
+
+			color: transparent;
+
+			-webkit-animation: EntryAuthorAnim 10s linear infinite;
+			-moz-animation: EntryAuthorAnim 10s linear infinite;
+			-o-animation: EntryAuthorAnim 10s linear infinite;
+			animation: EntryAuthorAnim 10s linear infinite;
+		}
+
+		@-webkit-keyframes EntryAuthorAnim {
+			0%{background-position:0% 50%}
+			50%{background-position:100% 50%}
+			100%{background-position:200% 50%}
+		}
+		@-moz-keyframes EntryAuthorAnim {
+			0%{background-position:0% 50%}
+			50%{background-position:100% 50%}
+			100%{background-position:200% 50%}
+		}
+		@-o-keyframes EntryAuthorAnim {
+			0%{background-position:0% 50%}
+			50%{background-position:100% 50%}
+			100%{background-position:200% 50%}
+		}
+		@keyframes EntryAuthorAnim {
+			0%{background-position:0% 50%}
+			50%{background-position:100% 50%}
+			100%{background-position:200% 50%}
+		}
+
+		.entry_content {
 			overflow-wrap: break-word;
 			line-height: 1.8em;
 		}
 
-		h1 {
+		.entry_content a {
+			color: rgb(128, 128, 128);
+		}
+
+		.entry_meta {
+			cursor: default;
+			font-size: 1em;
+			margin-top: 0;
+		}
+
+		.entry_title {
 			cursor: pointer;
 			margin-bottom: 0;
 			-webkit-user-select: none;
 			-moz-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
-		}
-
-		h3 {
-			cursor: default;
-			font-size: 1em;
-			margin-top: 0;
 		}
 
 		img {
@@ -266,72 +313,92 @@
 			}
 		}
 
+		const htmlParser = new DOMParser();
+		function Post(titleStr, dateStr, authorStr, mimeStr, htmlStr, collapsed = false, master = false) {
+			const post = document.createElement('div');
+			const title = document.createElement('h1');
+			const postMeta = document.createElement('p');
+			const media = getMediaElement(dateStr, mimeStr);
+			const content = document.createElement('div');
+			const contentNodes = htmlParser.parseFromString(htmlStr, 'text/html').children;
+
+			console.log(contentNodes);
+
+			// Build the post
+			post.classList.add('entry_post');
+			post.appendChild(title);
+			post.appendChild(postMeta);
+
+			// Build the title
+			title.classList.add('entry_title');
+			title.appendChild(document.createTextNode(titleStr));
+
+			// Build the post metadata
+			const metaIcon = document.createElement('span');
+			metaIcon.appendChild(document.createTextNode('⇕'));
+			postMeta.classList.add('entry_meta');
+			const masterAuthor = master ? 'entry_author master_author' : 'entry_author';
+			const postMetaHTML = ` on <span class="entry_date">${Date.parse(dateStr).toString('dddd, MMMM dS, yyyy a\\t h:mmtt')}</span>${authorStr ? ` by <span class="${masterAuthor}">${authorStr}</span>` : ''}`;
+			postMeta.innerHTML = postMetaHTML;
+			postMeta.prepend(metaIcon);
+
+			// Build the post content
+			content.classList.add('entry_content');
+			for (let i = 0; i < contentNodes.length; i++)
+				content.appendChild(contentNodes[i]);
+
+			// Build the event listeners
+			title.addEventListener('click', e => setTimeout(() => title.scrollIntoView(true), 100));
+
+			postMeta.addEventListener('click', e => {
+				if (metaIcon.classList.contains('hide_me')) {
+					metaIcon.classList.remove('hide_me');
+					post.removeChild(post.lastElementChild);
+					post.removeChild(post.lastElementChild);
+				} else {
+					metaIcon.classList.add('hide_me');
+					post.appendChild(media);
+					post.appendChild(content);
+					setTimeout(() => title.scrollIntoView(true), 100)
+				}
+			});
+
+			// Only add the elements to the post if they are required for visibility
+			if (!collapsed) {
+				metaIcon.classList.add('hide_me');
+				post.appendChild(media);
+				post.appendChild(content);
+			}
+
+			this.attachTo = function(element) {
+				element.appendChild(post);
+				return this;
+			};
+		}
+
 		window.addEventListener('load', e => {
 			const contentBody = document.getElementById('content');
 
 			// Fetch the blog content
 			fetchJSON('./www/mlblogObject.json', function(data) {
+				console.log(data);
+
 				const blogContent = data.blogContent;
+				const blogContentHtml = data.blogContentHtml;
 				const usr = data.usernameContent;
 
-				function createPost(i, hide = false) {
-					// Capture this blog content data
-					const blogData = blogContent[i];
-
-					// Holds the contents of this particular blog entry.
-					const blogEntry = document.createElement('div');
-
-					const entryTitle = document.createElement('h1');
-					entryTitle.classList.add('entry_title');
-					entryTitle.appendChild(document.createTextNode(blogData.title));
-					entryTitle.addEventListener('click', e => {
-						// Delay to make sure content has loaded before scroll to top is active.
-						setTimeout(() => entryTitle.scrollIntoView(true), 100);
-					});
-
-					const entryMeta = document.createElement('h3');
-					entryTitle.classList.add('entry_meta');
-					const entryMetaDropdown = document.createElement('span');
-					entryMetaDropdown.appendChild(document.createTextNode('⇕ '));
-					entryMeta.appendChild(entryMetaDropdown);
-
+				function createPost(i, collapsed = false) {
+					const blogData = blogContentHtml[i];
+					let author = '';
 					try {
-						const entryMetaTxt = `${blogData.date} by ${usr[blogData.username].display}`;
-						entryMeta.appendChild(document.createTextNode(entryMetaTxt));
+						author = usr[blogData.username].display;
 					} catch (e) {
-						entryMeta.appendChild(document.createTextNode(`${blogData.date}`));
+						author = false;
 					}
 
-					const postMeat = () => {
-						entryMetaDropdown.classList.add('dropdown');
+					const mime = blogData.link.split('`')[1];
 
-						// Add the media associated with the post
-						const mime = blogData.link.split('`')[1];
-						blogEntry.appendChild(getMediaElement(blogData.date, mime));
-
-						const content = blogData.content.split('\n');
-						for (let j = 0; j < content.length; j++) {
-							const entryContentParagraph = document.createElement('p');
-							entryContentParagraph.appendChild(document.createTextNode(content[j]));
-
-							// Add the blog content to the main body for now.
-							blogEntry.appendChild(entryContentParagraph);
-						}
-					};
-
-					// Add the blog entry to their respective parent containers
-					blogEntry.appendChild(entryTitle);
-					blogEntry.appendChild(entryMeta);
-					if (hide) {
-						let init = false;
-						blogEntry.addEventListener('click', e => {
-							if (!init) {
-								init = true;
-								postMeat();
-							}
-						});
-					} else postMeat();
-					contentBody.appendChild(blogEntry);
+					new Post(blogData.title, blogData.date, author, mime, blogData.content, collapsed, blogData.username == 'tacowhisperer').attachTo(contentBody);
 				}
 
 				const DISP_DAYS = 7
