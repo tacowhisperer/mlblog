@@ -1,6 +1,13 @@
 {
         "blogContent": [
                 {
+                        "date": "6/26/2020 14:40:47",
+                        "username": "tacowhisperer",
+                        "title": "Forgot to use the crackhead repellent this morning... oops",
+                        "link": "`image/png",
+                        "content": "[in the works, stay tuned]"
+                },
+                {
                         "date": "6/25/2020 15:02:47",
                         "username": "tacowhisperer",
                         "title": "Warning: People are stupid and shouldn't be allowed to procreate without a license.",
@@ -233,6 +240,13 @@
                 }
         ],
         "blogContentHtml": [
+                {
+                        "date": "6/26/2020 14:40:47",
+                        "username": "tacowhisperer",
+                        "title": "Forgot to use the crackhead repellent this morning... oops",
+                        "link": "`image/png",
+                        "content": "<p>[in the works, stay tuned]</p>"
+                },
                 {
                         "date": "6/25/2020 15:02:47",
                         "username": "tacowhisperer",
