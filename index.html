@@ -74,7 +74,7 @@
 
 		.entry_content {
 			overflow-wrap: break-word;
-			line-height: 1.85em;
+			line-height: 1.9em;
 		}
 
 		.entry_content a {
@@ -102,6 +102,21 @@
 
 		video {
 			width: 100%;
+		}
+
+		.video_wrapper {
+			position: relative;
+			padding-bottom: 56.25%; /* 16:9 */
+			padding-top: 25px;
+			height: 0;
+		}
+
+		.video_wrapper iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
 		}
 	</style>
 
@@ -382,13 +397,12 @@
 		}
 
 		window.addEventListener('load', e => {
+			const MASTER = 'tacowhisperer';
 			const contentBody = document.getElementById('content');
 
 			// Fetch the blog content
 			fetchJSON('./www/mlblogObject.json', function(data) {
-				console.log(data);
-
-				const blogContent = data.blogContent;
+				// const blogContent = data.blogContent;
 				const blogContentHtml = data.blogContentHtml;
 				const usr = data.usernameContent;
 
@@ -403,17 +417,17 @@
 
 					const mime = blogData.link.split('`')[1];
 
-					new Post(blogData.title, blogData.date, author, mime, blogData.content, collapsed, blogData.username == 'tacowhisperer').attachTo(contentBody);
+					new Post(blogData.title, blogData.date, author, mime, blogData.content, collapsed, blogData.username == MASTER).attachTo(contentBody);
 				}
 
 				const DISP_DAYS = 7
 
 				// Display latest week of posts
-				for (let i = 0; i < DISP_DAYS && i < blogContent.length; i++)
+				for (let i = 0; i < DISP_DAYS && i < blogContentHtml.length; i++)
 					createPost(i, false);
 
 				// Add all other blog entries as collapsed titles
-				for (let i = DISP_DAYS; i < blogContent.length; i++)
+				for (let i = DISP_DAYS; i < blogContentHtml.length; i++)
 					createPost(i, true);
 			});
 
