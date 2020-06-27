@@ -340,7 +340,6 @@
 			const postMeta = document.createElement('p');
 			const media = getMediaElement(dateStr, mimeStr);
 			const content = document.createElement('div');
-			const contentNodes = htmlParser.parseFromString(htmlStr, 'text/html').children;
 
 			// Build the post
 			post.classList.add('entry_post');
@@ -362,8 +361,7 @@
 
 			// Build the post content
 			content.classList.add('entry_content');
-			for (let i = 0; i < contentNodes.length; i++)
-				content.appendChild(contentNodes[i]);
+			content.innerHTML = htmlStr;
 
 			// Build the event listeners
 			title.addEventListener('click', e => setTimeout(() => title.scrollIntoView(true), 100));
@@ -443,6 +441,11 @@
 			function setBodyBackground() {
 				document.body.style.background = BG_STATE == DARK ? 'black' : 'white';
 				document.body.style.color = BG_STATE == DARK ? '#eee' : 'black';
+
+				// const entries = document.getElementsByClassName('entry_post');
+				// for (let i = 0; i < entries.length; i++)
+				// 	entries[i].style.color = BG_STATE == DARK ? '#eee' : 'black';;
+
 				window.localStorage.setItem('BG_STATE', JSON.stringify(BG_STATE));
 			}
 
