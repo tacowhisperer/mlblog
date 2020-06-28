@@ -355,7 +355,7 @@
 			metaIcon.appendChild(document.createTextNode('⇕'));
 			postMeta.classList.add('entry_meta');
 			const masterAuthor = master ? 'entry_author master_author' : 'entry_author';
-			const postMetaHTML = ` on <span class="entry_date">${Date.parse(dateStr).toString('dddd, MMMM dS, yyyy a\\t h:mmtt')}</span>${authorStr ? ` by <span class="${masterAuthor}">${authorStr}</span>` : ''}`;
+			const postMetaHTML = ` <span class="entry_date">${Date.parse(dateStr).toString('dddd, MMMM dS, yyyy a\\t h:mmtt')}</span>${authorStr ? ` by <span class="${masterAuthor}">${authorStr}</span>` : ''}`;
 			postMeta.innerHTML = postMetaHTML;
 			postMeta.prepend(metaIcon);
 
