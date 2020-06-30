@@ -41,7 +41,8 @@ function app() {
 	const mlreader = reader(data => fs.writeFile(BLOG_DATA_PATH,
 		(function() {
 			try {
-				return JSON.stringify(data[BLOG_OBJ], null, 8);
+				// return JSON.stringify(data[BLOG_OBJ], null, 8);
+				return JSON.stringify(data[BLOG_OBJ]);
 			} catch (err) {
 				console.error('Error parsing blog data:', err);
 				return '{}';

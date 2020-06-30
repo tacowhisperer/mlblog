@@ -61,7 +61,7 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	/**
 	 * Reads and parses the main blog content found in the blog at the Google Sheets database.
 	 */
-	this.blogContent = async function() {
+	async function getBlogContent() {
 		const rawBlogContent = await DB.readSheetColumns('src', 0, 0);
 		const transBlogContent = DB.transposeArray(rawBlogContent)[0];
 
@@ -74,7 +74,7 @@ function mlblogObject(sheetDb, blogContentOrder, userContentOrder) {
 	 * of plaintext.
 	 */
 	this.blogContentHtml = async function() {
-		const blogContent = await this.blogContent();
+		const blogContent = await getBlogContent();
 
 		return blogContent.map(entry => {
 			entry[B_KEY] = MD.makeHtml(entry[B_KEY]);
