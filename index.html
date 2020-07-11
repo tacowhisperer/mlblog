@@ -15,6 +15,9 @@
 
 	<!-- Date.js -->
 	<script type="text/javascript" src="./www/src/date/date.min.js"></script>
+
+	<!-- Lazy loading libarary. -->
+	<script type="text/javascript" src="./www/src/lazy/lozad.min.js"></script>
 	
 	<style>
 		* {
@@ -127,7 +130,7 @@
 	<!-- Links should open in a new tab by default -->
 	<base target="_blank">
 
-	<!-- I guess it would be nice for everything to fucking work lol. -->
+	<!-- I guess it would be nice for everything to work lol. -->
 	<script type="text/javascript">
 		function doubleclick(el, onsingle, ondouble) {
 			if (el.getAttribute("data-dblclick") == null) {
@@ -313,21 +316,34 @@
 				case '.png':
 				case '.jpg':
 					var img = document.createElement('img');
-					img.setAttribute('src', file);
+
+					// Lazy loading capability
+					img.classList.add('lozad');
+					img.dataset.src = file;
+
+					//img.setAttribute('src', file);
+
+					// Try to save on bandwidth where possible.
+					// img.setAttribute('loading', 'lazy');
 
 					return img;
 
 				case '.mp4':
 					var video = document.createElement('video');
+					video.classList.add('lozad');
 					video.setAttribute('playsinline', '');
 
 					var source = document.createElement('source');
-					source.setAttribute('src', file);
+
+					// source.setAttribute('src', file);
+
+					// Lazy loading capability
+					source.dataset.src = file;
+
 					source.setAttribute('type', mime);
 					video.appendChild(source);
 
 					video.autoplay = true;
-					// video.controls = true;
 					video.loop = true;
 					video.muted = true;
 
@@ -435,6 +451,16 @@
 				// Add all other blog entries as collapsed titles
 				for (let i = DISP_DAYS; i < blogContentHtml.length; i++)
 					createPost(i, true);
+
+				// Lazy load all iframes
+				const frames = document.getElementsByTagName('iframe');
+				console.log(frames);
+				for (let i = 0; i < frames.length; i++)
+					frames[i].classList.add('lozad');
+
+				// Lazy load all media elements
+				const observer = lozad();
+				observer.observe();
 			});
 
 			// Populate the blog header
