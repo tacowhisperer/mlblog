@@ -321,11 +321,6 @@
 					img.classList.add('lozad');
 					img.dataset.src = file;
 
-					//img.setAttribute('src', file);
-
-					// Try to save on bandwidth where possible.
-					// img.setAttribute('loading', 'lazy');
-
 					return img;
 
 				case '.mp4':
@@ -334,8 +329,6 @@
 					video.setAttribute('playsinline', '');
 
 					var source = document.createElement('source');
-
-					// source.setAttribute('src', file);
 
 					// Lazy loading capability
 					source.dataset.src = file;
@@ -365,6 +358,8 @@
 			post.classList.add('entry_post');
 			post.appendChild(title);
 			post.appendChild(postMeta);
+			post.appendChild(media);
+			post.appendChild(content);
 
 			// Build the title
 			title.classList.add('entry_title');
@@ -389,12 +384,12 @@
 			postMeta.addEventListener('click', e => {
 				if (metaIcon.classList.contains('hide_me')) {
 					metaIcon.classList.remove('hide_me');
-					post.removeChild(post.lastElementChild);
-					post.removeChild(post.lastElementChild);
+					media.classList.add('hide_me');
+					content.classList.add('hide_me');
 				} else {
 					metaIcon.classList.add('hide_me');
-					post.appendChild(media);
-					post.appendChild(content);
+					media.classList.remove('hide_me');
+					content.classList.remove('hide_me');
 
 					// Try to play the media if it's a video
 					try {
@@ -405,11 +400,11 @@
 				}
 			});
 
-			// Only add the elements to the post if they are required for visibility
-			if (!collapsed) {
-				metaIcon.classList.add('hide_me');
-				post.appendChild(media);
-				post.appendChild(content);
+			// Only display the content elements of the post if they are not requested hidden
+			if (collapsed) {
+				metaIcon.classList.remove('hide_me');
+				media.classList.add('hide_me');
+				content.classList.add('hide_me');
 			}
 
 			this.attachTo = function(element) {
@@ -477,10 +472,6 @@
 			function setBodyBackground() {
 				document.body.style.background = BG_STATE == DARK ? 'black' : 'white';
 				document.body.style.color = BG_STATE == DARK ? '#eee' : 'black';
-
-				// const entries = document.getElementsByClassName('entry_post');
-				// for (let i = 0; i < entries.length; i++)
-				// 	entries[i].style.color = BG_STATE == DARK ? '#eee' : 'black';;
 
 				window.localStorage.setItem('BG_STATE', JSON.stringify(BG_STATE));
 			}
