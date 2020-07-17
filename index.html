@@ -127,8 +127,19 @@
 			height: 100%;
 		}
 
+		.application {
+			height: 23em;
+			width: 100%;
+			-webkit-overflow-scrolling: touch;
+			overflow-y: auto;
+			position: relative;
+		}
+
 		.application iframe {
-			color: rgb(128, 128, 128);
+			border: 0;
+			height: 100%;
+			position: absolute;
+			width: 100%;
 		}
 	</style>
 
@@ -350,13 +361,14 @@
 					return video;
 
 				case '.embed':
-					var container = document.createElement('iframe');
-					container.classList.add('lozad');
+					var container = document.createElement('div');
 					container.classList.add('application');
-					container.dataset.src = `./www/asset/blog/link/${new Date(date).getTime()}/index.html`;
-					container.style.width = '100%';
-					container.style.height = '20em';
-					container.style.border = '0';
+
+					var content = document.createElement('iframe');
+					content.classList.add('lozad');
+					content.dataset.src = `./www/asset/blog/link/${new Date(date).getTime()}/index.html`;
+
+					container.appendChild(content);
 
 					return container;
 				default:
