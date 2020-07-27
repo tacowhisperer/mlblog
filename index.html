@@ -30,6 +30,11 @@
 			overflow-x: hidden;
 		}
 
+		.blog_idx {
+			font-size: 0.95em;
+			margin: 0;
+		}
+
 		.hide_me {
 			display: none;
 		}
@@ -98,6 +103,7 @@
 		.entry_title {
 			cursor: pointer;
 			margin-bottom: 0;
+			margin-top: 0;
 			-webkit-user-select: none;
 			-moz-user-select: none;
 			-ms-user-select: none;
@@ -377,8 +383,9 @@
 		}
 
 		const htmlParser = new DOMParser();
-		function Post(titleStr, dateStr, authorStr, mimeStr, htmlStr, collapsed = false, master = false) {
+		function Post(idxStr, titleStr, dateStr, authorStr, mimeStr, htmlStr, collapsed = false, master = false) {
 			const post = document.createElement('div');
+			const idx = document.createElement('p');
 			const title = document.createElement('h1');
 			const postMeta = document.createElement('p');
 			const media = getMediaElement(dateStr, mimeStr);
@@ -386,10 +393,15 @@
 
 			// Build the post
 			post.classList.add('entry_post');
+			post.appendChild(idx);
 			post.appendChild(title);
 			post.appendChild(postMeta);
 			post.appendChild(media);
 			post.appendChild(content);
+
+			// Build the post index
+			idx.classList.add('blog_idx');
+			idx.appendChild(document.createTextNode(idxStr));
 
 			// Build the title
 			title.classList.add('entry_title');
@@ -464,9 +476,10 @@
 						author = false;
 					}
 
+					const blogIdx = `#${blogContentHtml.length - i}`;
 					const mime = blogData.link.split('`')[1];
 
-					new Post(blogData.title, blogData.date, author, mime, blogData.content, collapsed, blogData.username == MASTER).attachTo(contentBody);
+					new Post(blogIdx, blogData.title, blogData.date, author, mime, blogData.content, collapsed, blogData.username == MASTER).attachTo(contentBody);
 				}
 
 				const DISP_DAYS = 7;
