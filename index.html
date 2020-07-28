@@ -155,6 +155,16 @@
 
 	<!-- I guess it would be nice for everything to work lol. -->
 	<script type="text/javascript">
+		function getPostIdxStr(i) {
+			switch (i) {
+				case 69:
+				case 420:
+					return `#${i}... (☞ ͡° ͜ʖ ͡°)☞ Nice.`;
+				default:
+					return `#${i}`;
+			}
+		}
+
 		function doubleclick(el, onsingle, ondouble) {
 			if (el.getAttribute("data-dblclick") == null) {
 				el.setAttribute("data-dblclick", 1);
@@ -477,7 +487,7 @@
 						author = false;
 					}
 
-					const blogIdx = `#${blogContentHtml.length - i}`;
+					const blogIdx = getPostIdxStr(blogContentHtml.length - i);
 					const mime = blogData.link.split('`')[1];
 
 					new Post(blogIdx, blogData.title, blogData.date, author, mime, blogData.content, collapsed, blogData.username == MASTER).attachTo(contentBody);
