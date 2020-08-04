@@ -31,9 +31,12 @@
 		}
 
 		.blog_idx {
+			color: inherit;
+			cursor: pointer;
 			font-size: 0.95em;
 			margin: 0;
 			margin-top: 2em;
+			text-decoration: none;
 		}
 
 		.hide_me {
@@ -396,7 +399,7 @@
 		const htmlParser = new DOMParser();
 		function Post(idxStr, titleStr, dateStr, authorStr, mimeStr, htmlStr, collapsed = false, master = false) {
 			const post = document.createElement('div');
-			const idx = document.createElement('p');
+			const idx = document.createElement('a');
 			const title = document.createElement('h1');
 			const postMeta = document.createElement('p');
 			const media = getMediaElement(dateStr, mimeStr);
@@ -411,7 +414,11 @@
 			post.appendChild(content);
 
 			// Build the post index
+			const post_id = `post_${idxStr.replace(/\D/g, '')}`
 			idx.classList.add('blog_idx');
+			idx.setAttribute('target', '_self');
+			idx.setAttribute('id', post_id);
+			idx.setAttribute('href', `#${post_id}`);
 			idx.appendChild(document.createTextNode(idxStr));
 
 			// Build the title
@@ -432,7 +439,10 @@
 			content.innerHTML = htmlStr;
 
 			// Build the event listeners
-			title.addEventListener('click', e => setTimeout(() => title.scrollIntoView(true), 100));
+			const DELAY = 100;
+			const scrollIntoView = (e) => () => e.scrollIntoView(true);
+			// idx.addEventListener('click', e => setTimeout(scrollIntoView(idx), DELAY));
+			title.addEventListener('click', e => setTimeout(scrollIntoView(title), DELAY));
 
 			postMeta.addEventListener('click', e => {
 				if (metaIcon.classList.contains('hide_me')) {
